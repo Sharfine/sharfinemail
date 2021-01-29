@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: fmall-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${spring.cloud.nacos.config.server-addr}
+        namespace: 06608ba6-e4ca-4dae-993a-02d9466c5a28
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yml
+        namespace: 06608ba6-e4ca-4dae-993a-02d9466c5a28
+        shared-configs: fmall-base.yml
+        refresh-enabled: true
+    gateway:
+      routes:
+        - id: test_route
+          uri: https://www.baidu.com
+          predicates:
+            - Query=url,baidu
+
+        - id: product_route
+          uri: lb://fmall-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
+
+        - id: third_party_route
+          uri: lb://fmall-third-party
+          predicates:
+            - Path=/api/thirdparty/**
+          filters:
+            - RewritePath=/api/thirdparty/(?<segment>/?.*),/$\{segment}
+
+        - id: admin_route
+          uri: lb://renren-fast
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*), /renren-fast/$\{segment}
+server:
+  port: 88

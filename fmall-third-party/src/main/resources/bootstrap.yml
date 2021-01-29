@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: fmall-third-party
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${spring.cloud.nacos.config.server-addr}
+        namespace: 06608ba6-e4ca-4dae-993a-02d9466c5a28
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yml
+        namespace: 06608ba6-e4ca-4dae-993a-02d9466c5a28
+        shared-configs: fmall-base.yml
+        refresh-enabled: true
+server:
+  port: 30000
