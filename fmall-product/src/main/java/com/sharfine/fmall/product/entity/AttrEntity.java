@@ -2,14 +2,13 @@ package com.sharfine.fmall.product.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
-import lombok.Data;
 
 /**
  * 商品属性
- * 
+ *
  * @author sharfine
  * @email sharfine@gmail.com
  * @date 2021-01-21 11:23:41
@@ -40,6 +39,8 @@ public class AttrEntity implements Serializable {
 	 * 可选值列表[用逗号分隔]
 	 */
 	private String valueSelect;
+
+	private Integer valueType;
 	/**
 	 * 属性类型[0-销售属性，1-基本属性，2-既是销售属性又是基本属性]
 	 */
@@ -52,6 +53,7 @@ public class AttrEntity implements Serializable {
 	 * 所属分类
 	 */
 	private Long catelogId;
+
 	/**
 	 * 快速展示【是否展示在介绍上；0-否 1-是】，在sku中仍然可以调整
 	 */

@@ -56,8 +56,8 @@ public class BrandController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:brand:save")
-    public R save(@Validated @RequestBody BrandEntity brand){
-		brandService.save(brand);
+    public R save(@Validated @RequestBody BrandEntity brand) {
+        brandService.save(brand);
 
         return R.ok();
     }
@@ -66,9 +66,20 @@ public class BrandController {
      * 修改
      */
     @RequestMapping("/update")
-   // @RequiresPermissions("product:brand:update")
-    public R update(@RequestBody BrandEntity brand){
-		brandService.updateById(brand);
+    // @RequiresPermissions("product:brand:update")
+    public R update(@RequestBody BrandEntity brand) {
+        brandService.updateDetail(brand);
+
+        return R.ok();
+    }
+
+    /**
+     * 修改状态
+     */
+    @RequestMapping("/update/status")
+    //@RequiresPermissions("product:brand:update")
+    public R updateStatus(@RequestBody BrandEntity brand) {
+        brandService.updateById(brand);
 
         return R.ok();
     }
@@ -78,8 +89,8 @@ public class BrandController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:brand:delete")
-    public R delete(@RequestBody Long[] brandIds){
-		brandService.removeByIds(Arrays.asList(brandIds));
+    public R delete(@RequestBody Long[] brandIds) {
+        brandService.removeByIds(Arrays.asList(brandIds));
 
         return R.ok();
     }

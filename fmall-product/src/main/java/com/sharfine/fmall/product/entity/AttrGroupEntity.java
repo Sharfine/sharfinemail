@@ -1,15 +1,15 @@
 package com.sharfine.fmall.product.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
-import lombok.Data;
 
 /**
  * 属性分组
- * 
+ *
  * @author sharfine
  * @email sharfine@gmail.com
  * @date 2021-01-21 11:23:41
@@ -44,5 +44,11 @@ public class AttrGroupEntity implements Serializable {
 	 * 所属分类id
 	 */
 	private Long catelogId;
+
+	/**
+	 * 所属分类
+	 */
+	@TableField(exist = false)
+	private Long[] catelogPath;
 
 }

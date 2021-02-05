@@ -1,29 +1,48 @@
 package com.sharfine.fmall.product.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sharfine.common.utils.PageUtils;
 import com.sharfine.common.utils.Query;
-
 import com.sharfine.fmall.product.dao.BrandDao;
 import com.sharfine.fmall.product.entity.BrandEntity;
 import com.sharfine.fmall.product.service.BrandService;
+import com.sharfine.fmall.product.service.CategoryBrandRelationService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 
 @Service("brandService")
 public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> implements BrandService {
 
+    @Autowired
+    private CategoryBrandRelationService categoryBrandRelationService;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<BrandEntity> page = this.page(
-                new Query<BrandEntity>().getPage(params),
-                new QueryWrapper<BrandEntity>()
-        );
-
+        String key = (String) params.get("key");
+        QueryWrapper<BrandEntity> queryWrapper = new QueryWrapper<BrandEntity>();
+        if (StringUtils.isNotEmpty(key)) {
+            queryWrapper.eq("brand_id", key).or().like("name", key);
+        }
+        IPage<BrandEntity> page = this.page(new Query<BrandEntity>().getPage(params), queryWrapper);
         return new PageUtils(page);
+    }
+
+    @Transactional
+    @Override
+    public void updateDetail(BrandEntity brand) {
+        //保证冗余字段 数据一致性
+        this.updateById(brand);
+        if (StringUtils.isNotEmpty(brand.getName())) {
+            //同步更新其他表中的数据
+            categoryBrandRelationService.updatebrand(brand.getBrandId(), brand.getName());
+        }
     }
 
 }
